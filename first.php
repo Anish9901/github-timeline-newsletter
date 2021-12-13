@@ -7,31 +7,60 @@
   <body>
   <h1>GitHub Timleine Updates</h1>
   <?php
-  $aa = 'hello';
-  echo '<a style="text-decoration: none;" href="https://google.com">'.$aa.'</a>';
-/* //$api_url = "https://github.com/timeline";
-//$my_var = file_get_contents('test.xml');
-//echo $my_var; */
-//$xml = '<xml><test><a a="b" r="x" q="v" /></test><b/></xml>';
-//$x = new SimpleXMLElement($xml);
+  
 $xml = simplexml_load_file('test.xml') or die("Cant load xml");
-//print_r($xml);
-//echo "hello";
+
+/* $abc = 'fff/aaa';
+$xyz =  'aaa/bbb';
+$link = 'https://github.com';
+$test = "$xyz forked <a href = '$link/$abc'>$abc</a> from $xyz <br>"; */
+//$test = $xyz.' forked <a href = "#">'.$abc.' </a>from '.$xyz.'<br>';
+echo $test;
 
 foreach($xml->entry as $record)
 {
   //print_r($record);
-	/* $show = $record->link->attributes();
+	$show = $record->link->attributes();
   //print_r($show);
   
-  echo $show['href'];
-  echo "<br>";
+  /* echo "<br>";
   echo $record->title;
-  echo "<br>"; */
+  echo "<br>";  */
+  $first = '';
+  $last = '';
+  $middle = '';
+  $restofthestring = '';
   $yo = $record->title;
   $str = explode(" ",$yo);
-  echo $str[0]." ";
-  echo $str[count($str)-1]."<br>";
+  $first = $str[0]." ";
+  $last = $str[count($str)-1];
+
+  $href1 = $record->author->uri;
+  $href2 = $show['href'];
+  $href3 = "https://github.com/".$last;
+
+  if ($str[1]=="forked")
+  {
+    $middle = $str[2];
+    //echo $middle;
+  }
+  for ($x = 1; $x < count($str)-1;$x++)
+  {
+    if ($str[1]=="forked")
+    {
+      $middle = $str[2];
+      $restofthestring = "forked <a href= '$href2'>$middle</a> from";
+    }
+    else
+    {
+      $restofthestring = $restofthestring.$str[$x]." "; 
+    }
+  }
+  //$show = "$first $middle $last";
+  $beg = "<a href = '$href1'>$first</a>";
+  $end = "<a href = '$href3'>$last</a>";
+  $check = "<a href = '$href2'>[Check Here]</a>";
+  echo "$beg $restofthestring $end $check"."<br><br>";
   /* echo $record->author->name;
   echo "<br>";
   echo $record->author->uri;
